@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Undangan Pernikahan Sandikajo & Salsadela</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Poppins:wght@300;400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        rustic: {
+                            bg: '#FAF7F2',
+                             card: '#FFFDF9',
+                            pink: '#E8A598',
+                            darkpink: '#D87093',
+                            rose: '#FCE4EC',
+                            brown: '#8B5A2B',
+                            darkbrown: '#5C4033',
+                            accent: '#D4A373'
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['"Playfair Display"', 'serif'],
+                        sans: ['"Poppins"', 'sans-serif'],
+                        code: ['"Fira Code"', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #FAF7F2;
+            color: #5C4033;
+            font-family: 'Poppins', sans-serif;
+        }
+        .font-serif {
+            font-family: 'Playfair Display', serif;
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #FAF7F2;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #E8A598;
+            border-radius: 4px;
+        }
+        .fade-in {
+            animation: fadeIn 0.8s ease-in-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        /* VS Code Editor Theme Simulation */
+        .vscode-bg {
+            background-color: #1e1e1e;
+            color: #d4d4d4;
+        }
+    </style>
+</head>
+<body class="bg-rustic-bg min-h-screen flex items-center justify-center p-0 md:p-4">
+    <!-- MUSIK LATAR UNDANGAN -->
+    <audio id="backgroundMusic" src="lagu.wedding.mp3" loop preload="auto"></audio>
+    <button id="musicToggle" type="button" aria-label="Putar atau jeda musik"
+        onclick="toggleMusic()"
+        style="display:none; position:fixed; right:18px; bottom:18px; z-index:100;
+        width:48px; height:48px; border-radius:50%; border:1px solid #e8a598;
+        background:#fffdf9; color:#8b5a2b; box-shadow:0 4px 14px #0002;
+        cursor:pointer; font-size:18px;">
+        <i id="musicIcon" class="fa-solid fa-play"></i>
+        <span style="position:absolute; right:56px; white-space:nowrap; background:#fffdf9; color:#5c4033; padding:7px 10px; border-radius:12px; font:12px Poppins,sans-serif; box-shadow:0 2px 8px #0002;">Musik</span>
+    </button>
+
+
+    <!-- MOBILE CONTAINER WRAPPER -->
+    
+    <div id="app-container" class="w-full max-w-md bg-rustic-card shadow-2xl min-h-screen md:min-h-[850px] md:rounded-3xl overflow-hidden relative flex flex-col border border-rustic-pink/30">
+
+      <!-- INITIAL SCREEN: VS CODE OPENING TERMINAL / EDITOR -->
+        <div id="vscode-intro" class="absolute inset-0 z-50 vscode-bg flex flex-col font-code text-xs md:text-sm p-4 transition-all duration-700">
+            
+             <!-- Action Button inside VS Code simulation -->
+              <section class="relative h-[550px] bg-cover bg-center flex flex-col justify-between p-6 text-center text-white" style="background-image: linear-gradient(to bottom, rgba(92, 64, 51, 0.4), rgba(92, 64, 51, 0.7)), url('https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=1000');">
+                <span class="text-xs uppercase tracking-widest bg-white/20 backdrop-blur-md px-3 py-1 rounded-full font-sans font-medium">The Wedding Of</span>
+                <div class="my-auto space-y-3">
+                    <h1 class="font-serif text-4xl md:text-5xl font-bold tracking-wide text-rustic-rose">Sandikajo <br>&<br> Salsadela</h1>
+                    <p class="font-sans text-sm md:text-base font-light tracking-wider text-rustic-bg/90">Minggu, 16 April 2027</p>
+                </div>
+            <div class="pt-4 border-t border-gray-700 flex flex-col items-center">
+                <button onclick="revealInvitation()" class="w-full bg-gradient-to-r from-rustic-darkpink to-rustic-pink hover:opacity-90 text-white font-sans font-medium py-3 px-6 rounded-xl shadow-lg flex items-center justify-center space-x-2 transition transform active:scale-95">
+                    <i class="fa-solid fa-play text-xs"></i>
+                    <span>Buka Undangan</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- MAIN INVITATION CONTENT (Hidden initially) -->
+        <div id="invitation-content" class="hidden flex-1 flex flex-col opacity-0 transition-opacity duration-1000 overflow-y-auto">
+
+           <!-- HERO SECTION -->
+            <section class="relative h-[550px] bg-cover bg-center flex flex-col justify-between p-6 text-center text-white" style="background-image: linear-gradient(to bottom, rgba(92, 64, 51, 0.4), rgba(92, 64, 51, 0.7)), url('https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=1000');">
+                <div class="pt-6">
+                    <span class="text-xs uppercase tracking-widest bg-white/20 backdrop-blur-md px-3 py-1 rounded-full font-sans font-medium">The Wedding Of</span>
+                </div>
+
+                <div class="my-auto space-y-3">
+                    <h1 class="font-serif text-4xl md:text-5xl font-bold tracking-wide text-rustic-rose">Sandikajo <br>&<br> Salsadela</h1>
+                    <p class="font-sans text-sm md:text-base font-light tracking-wider text-rustic-bg/90">Minggu, 16 April 2027</p>
+                </div>
+
+                
+                <div class="pb-4">
+                    <div class="inline-flex items-center space-x-2 bg-black/30 backdrop-blur-sm px-4 py-2 rounded-full text-xs text-rustic-rose border border-white/20">
+                        <i class="fa-solid fa-database text-rustic-pink"></i>
+                        <span>Data synced from Google Sheets</span>
+                    </div>
+                </div>
+
+                 <!-- BISMILLAH & QUOTE SECTION -->
+            <section class="py-10 px-6 text-center bg-rustic-card border-b border-rustic-pink/20">
+                <div class="max-w-xs mx-auto space-y-4">
+                    <p class="font-serif italic text-xl text-rustic-darkbrown">"Dan di antara tanda-tanda kebesaran-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepada-Nya..."</p>
+                    <p class="font-sans text-xs text-rustic-brown font-semibold tracking-wider">(QS. Ar-Rum: 21)</p>
+                </div>
+            </section>
+
+             <!-- COUPLE PROFILES SECTION -->
+            <section class="py-12 px-6 bg-rustic-bg space-y-12">
+                <div class="text-center">
+                    <span class="text-rustic-brown uppercase tracking-widest text-xs font-semibold">Mempelai Bahagia</span>
+                    <h2 class="font-serif text-3xl font-bold text-rustic-darkbrown mt-1">Calon Pengantin</h2>
+                </div>
+
+
+                 <!-- Groom -->
+                <div class="bg-rustic-card p-6 rounded-2xl shadow-md border border-rustic-pink/30 flex flex-col items-center text-center space-y-4 transform hover:scale-[1.02] transition">
+                    <div class="w-36 h-36 rounded-full overflow-hidden border-4 border-rustic-pink shadow-inner">
+                        <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=500" alt="Sandikajo" class="w-full h-full object-cover">
+                    </div>
+                    <div class="space-y-1">
+                        <h3 class="font-serif text-2xl font-bold text-rustic-darkbrown">Sandikajo</h3>
+                        <p class="font-sans text-xs uppercase tracking-wider text-rustic-darkpink font-medium">Mempelai Pria</p>
+                    </div>
+                    <p class="font-sans text-xs text-gray-600 leading-relaxed">
+                        Putra Pertama dari <br>
+                        <span class="font-semibold text-rustic-darkbrown">Bapak Triando kusuma </span> & <span class="font-semibold text-rustic-darkbrown">Ibu Komala</span>
+                    </p>
+                </div>
+
+                <div class="text-center font-serif text-3xl text-rustic-pink italic">&</div>
+
+                <!-- Bride -->
+                <div class="bg-rustic-card p-6 rounded-2xl shadow-md border border-rustic-pink/30 flex flex-col items-center text-center space-y-4 transform hover:scale-[1.02] transition">
+                    <div class="w-36 h-36 rounded-full overflow-hidden border-4 border-rustic-pink shadow-inner">
+                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=500" alt="Salsadela" class="w-full h-full object-cover">
+                    </div>
+                    <div class="space-y-1">
+                        <h3 class="font-serif text-2xl font-bold text-rustic-darkbrown">Salsadela</h3>
+                        <p class="font-sans text-xs uppercase tracking-wider text-rustic-darkpink font-medium">Mempelai Wanita</p>
+                    </div>
+                    <p class="font-sans text-xs text-gray-600 leading-relaxed">
+                        Putri Kedua dari <br>
+                        <span class="font-semibold text-rustic-darkbrown">Bapak Bambang Tryo</span> & <span class="font-semibold text-rustic-darkbrown">Ibu Warsem Usbariyah</span>
+                    </p>
+                </div>
+            </section>
+
+            <!-- COUNTDOWN TIMER SECTION -->
+            <section class="py-10 px-6 bg-gradient-to-b from-rustic-rose/40 to-rustic-bg text-center">
+                <div class="max-w-xs mx-auto space-y-6">
+                    <div>
+                        <span class="text-xs uppercase tracking-widest text-rustic-brown font-semibold">Menuju Hari Bahagia</span>
+                        <h2 class="font-serif text-2xl font-bold text-rustic-darkbrown mt-1">Hitung Mundur Acara</h2>
+                    </div>
+
+                    <div class="grid grid-cols-4 gap-2 text-rustic-darkbrown">
+                        <div class="bg-rustic-card p-3 rounded-xl shadow border border-rustic-pink/20">
+                            <span id="days" class="block font-serif text-xl md:text-2xl font-bold text-rustic-darkpink">00</span>
+                            <span class="text-[10px] uppercase text-gray-500 font-sans">Hari</span>
+                        </div>
+                        <div class="bg-rustic-card p-3 rounded-xl shadow border border-rustic-pink/20">
+                            <span id="hours" class="block font-serif text-xl md:text-2xl font-bold text-rustic-darkpink">00</span>
+                            <span class="text-[10px] uppercase text-gray-500 font-sans">Jam</span>
+                        </div>
+                        <div class="bg-rustic-card p-3 rounded-xl shadow border border-rustic-pink/20">
+                            <span id="minutes" class="block font-serif text-xl md:text-2xl font-bold text-rustic-darkpink">00</span>
+                            <span class="text-[10px] uppercase text-gray-500 font-sans">Menit</span>
+                        </div>
+                        <div class="bg-rustic-card p-3 rounded-xl shadow border border-rustic-pink/20">
+                            <span id="seconds" class="block font-serif text-xl md:text-2xl font-bold text-rustic-darkpink">00</span>
+                            <span class="text-[10px] uppercase text-gray-500 font-sans">Detik</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- EVENT DETAILS SECTION -->
+            <section class="py-12 px-6 bg-rustic-bg space-y-8">
+                <div class="text-center">
+                    <span class="text-rustic-brown uppercase tracking-widest text-xs font-semibold">Rangkaian Acara</span>
+                    <h2 class="font-serif text-3xl font-bold text-rustic-darkbrown mt-1">Waktu & Tempat</h2>
+                </div>
+
+                <div class="space-y-6">
+                   <!-- Akad Card -->
+                    <div class="bg-rustic-card p-6 rounded-2xl shadow-md border-t-4 border-rustic-darkpink space-y-4">
+                        <div class="flex items-center space-x-3 text-rustic-darkpink">
+                            <i class="fa-solid fa-ring text-xl"></i>
+                            <h3 class="font-serif text-xl font-bold text-rustic-darkbrown">Akad Nikah</h3>
+                        </div>
+                        <div class="space-y-2 text-xs text-gray-600 font-sans">
+                            <p class="flex items-center space-x-2">
+                                <i class="fa-regular fa-calendar text-rustic-brown w-4"></i>
+                                <span class="font-medium text-rustic-darkbrown">Minggu, 16 April 2027</span>
+                            </p>
+                            <p class="flex items-center space-x-2">
+                                <i class="fa-regular fa-clock text-rustic-brown w-4"></i>
+                                <span>Pukul 08.00 WIB s.d. Selesai</span>
+                            </p>
+                            <p class="flex items-start space-x-2 pt-1">
+                                <i class="fa-solid fa-location-dot text-rustic-brown w-4 mt-0.5"></i>
+                                <span><strong>Masjid Al Anwar</strong>, Jl. Marga Mulya, Kec. Bongas, Kab. Indramayu</span>
+                            </p>
+                        </div>
+                         <div class="pt-2">
+                            <a href="https://www.google.com/maps/search/?api=1&query=Masjid+Al+Anwar+Jl.+Marga+Mulya+Bongas+Indramayu" target="_blank" class="w-full bg-rustic-pink/20 hover:bg-rustic-pink/30 text-rustic-darkbrown border border-rustic-pink py-2.5 px-4 rounded-xl text-xs font-medium flex items-center justify-center space-x-2 transition">
+                                <i class="fa-solid fa-map-location-dot"></i>
+                                <span>Buka Google Maps (Akad)</span>
+                            </a>
+                        </div>
+                    </div>
+
+                     <!-- Resepsi Card -->
+                    <div class="bg-rustic-card p-6 rounded-2xl shadow-md border-t-4 border-rustic-brown space-y-4">
+                        <div class="flex items-center space-x-3 text-rustic-brown">
+                            <i class="fa-solid fa-champagne-glasses text-xl"></i>
+                            <h3 class="font-serif text-xl font-bold text-rustic-darkbrown">Resepsi Pernikahan</h3>
+                        </div>
+                        <div class="space-y-2 text-xs text-gray-600 font-sans">
+                            <p class="flex items-center space-x-2">
+                                <i class="fa-regular fa-calendar text-rustic-brown w-4"></i>
+                                <span class="font-medium text-rustic-darkbrown">Minggu, 16 April 2027</span>
+                            </p>
+                            <p class="flex items-center space-x-2">
+                                <i class="fa-regular fa-clock text-rustic-brown w-4"></i>
+                                <span>Pukul 08.00 WIB s.d. Selesai</span>
+                            </p>
+                                                        <p class="flex items-start space-x-2 pt-1">
+                                <i class="fa-solid fa-location-dot text-rustic-brown w-4 mt-0.5"></i>
+                                <span><strong>Lapangan Sinarjaya Bongas</strong>, Jl. Marga Mulya, Kec. Bongas, Kab. Indramayu</span>
+                            </p>
+                        </div>
+                        <div class="pt-2">
+                            <a href="https://www.google.com/maps/search/?api=1&query=Lapangan+Sinarjaya+Bongas+Jl.+Marga+Mulya+Indramayu" target="_blank" class="w-full bg-rustic-brown/10 hover:bg-rustic-brown/20 text-rustic-darkbrown border border-rustic-brown/40 py-2.5 px-4 rounded-xl text-xs font-medium flex items-center justify-center space-x-2 transition">
+                                <i class="fa-solid fa-map-location-dot"></i>
+                                <span>Buka Google Maps (Resepsi)</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+             <!-- GOOGLE SHEETS DATA INTEGRATION INFO -->
+            <section class="py-8 px-6 bg-rustic-card border-t border-rustic-pink/20 text-center space-y-3">
+                <div class="w-10 h-10 mx-auto rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center">
+                    <i class="fa-solid fa-table"></i>
+                </div>
+                <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reservasi - Buku Tamu</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Georgia', serif;
+    color: #53664e;
+    padding: 20px;
+}
+
+.container {
+    max-width: 480px;
+    margin: auto;
+    padding: 25px;
+    border: 1px solid #d5ddcd;
+    border-radius: 20px;
+    background: rgba(241, 243, 236, 0.90);
+    backdrop-filter: blur(10px);
+}
+
+header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+header h1 {
+    font-size: 35px;
+    font-weight: normal;
+    margin: 10px 0;
+}
+
+header p {
+    font-size: 13px;
+    color: #84947b;
+    letter-spacing: 2px;
+}
+
+.decoration {
+    margin-top: 15px;
+    color: #a5b49b;
+}
+
+/* STATISTIK */
+
+.stats {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 25px;
+}
+
+.stat-card {
+    background: #e3e9dc;
+    padding: 18px;
+    border-radius: 12px;
+}
+
+.stat-card p {
+    font-size: 13px;
+    margin-bottom: 5px;
+}
+
+.stat-card h2 {
+    font-size: 28px;
+}
+
+/* FORM */
+
+.section-title {
+    font-size: 21px;
+    margin-bottom: 18px;
+}
+
+.form-section {
+    border: 1px solid #d5ddcd;
+    padding: 18px;
+    border-radius: 15px;
+    margin-bottom: 28px;
+}
+
+.form-group {
+    margin-bottom: 16px;
+}
+
+label {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+input, textarea, select {
+    width: 100%;
+    padding: 13px;
+    border: 1px solid #d5ddcd;
+    border-radius: 9px;
+    background: rgba(255,255,255,0.65);
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    color: #53664e;
+    outline: none;
+}
+
+input:focus, textarea:focus, select:focus {
+    border-color: #879b7c;
+}
+
+textarea {
+    resize: vertical;
+}
+
+button {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 9px;
+    background: #879b7c;
+    color: white;
+    font-size: 15px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #657b5d;
+}
+
+/* DAFTAR TAMU */
+
+.guest-section {
+    margin-top: 25px;
+}
+
+.search {
+    margin-bottom: 15px;
+}
+
+.guest-card {
+    background: #e3e9dc;
+    padding: 16px;
+    border-radius: 12px;
+    margin-bottom: 12px;
+}
+
+.guest-name {
+    font-size: 17px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.status {
+    display: inline-block;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    margin-bottom: 10px;
+}
+
+.hadir {
+    background: #c7dbc0;
+    color: #46643d;
+}
+
+.tidak {
+    background: #ead5d0;
+    color: #89584e;
+}
+
+.guest-info {
+    font-size: 13px;
+    line-height: 1.7;
+    overflow-wrap: anywhere;
+}
+
+.empty {
+    text-align: center;
+    padding: 20px;
+    background: #e3e9dc;
+    border-radius: 10px;
+    font-size: 13px;
+    color: #84947b;
+}
+
+footer {
+    text-align: center;
+    margin-top: 25px;
+    font-size: 12px;
+    color: #84947b;
+}
+
+/* RESPONSIVE HANDPHONE */
+
+@media (max-width: 600px) {
+    body {
+        padding: 10px;
+    }
+
+    .container {
+        padding: 18px;
+        border-radius: 15px;
+    }
+
+    header h1 {
+        font-size: 30px;
+    }
+
+    .section-title {
+        font-size: 19px;
+    }
+
+    input, textarea, select {
+        font-size: 16px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <header>
+        <p>THE GUESTBOOK</p>
+        <h1>Reservasi</h1>
+        <p>Buku Tamu & Ucapan</p>
+        <div class="decoration">✦ ───────── ✦</div>
+    </header>
+
+    <!-- STATISTIK -->
+
+    <div class="stats">
+
+        <div class="stat-card">
+            <p>Total Hadir</p>
+            <h2 id="totalHadir">0</h2>
+        </div>
+
+        <div class="stat-card">
+            <p>Tidak Hadir</p>
+            <h2 id="totalTidak">0</h2>
+        </div>
+
+        <div class="stat-card">
+            <p>Total Tamu</p>
+            <h2 id="totalTamu">0</h2>
+        </div>
+
+    </div>
+
+    <!-- FORM RESERVASI -->
+
+    <div class="form-section">
+
+        <h2 class="section-title">Formulir Reservasi</h2>
+
+        <form id="guestForm">
+
+            <div class="form-group">
+                <label>Nama Lengkap</label>
+                <input
+                    type="text"
+                    id="nama"
+                    placeholder="Masukkan nama Anda"
+                    required>
+            </div>
+
+            <div class="form-group">
+                <label>Ucapan</label>
+                <textarea
+                    id="ucapan"
+                    rows="3"
+                    placeholder="Tuliskan ucapan dan doa..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Pilihan Kehadiran</label>
+                <select id="kehadiran">
+                    <option value="Hadir">Hadir</option>
+                    <option value="Tidak Hadir">Tidak Hadir</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Catatan</label>
+                <textarea
+                    id="catatan"
+                    rows="2"
+                    placeholder="Catatan tambahan (opsional)"></textarea>
+            </div>
+
+            <button type="submit">Kirim Reservasi</button>
+
+        </form>
+
+    </div>
+
+    <!-- DAFTAR KEHADIRAN -->
+
+    <div class="guest-section">
+
+        <h2 class="section-title">Daftar Kehadiran</h2>
+
+        <input
+            type="text"
+            id="search"
+            class="search"
+            placeholder="Cari nama tamu...">
+
+        <div id="guestList"></div>
+
+    </div>
+
+    <!-- DAFTAR UCAPAN -->
+
+    <div class="guest-section">
+        <h2 class="section-title">Ucapan & Doa</h2>
+        <div id="ucapanList"></div>
+    </div>
+
+    <footer>
+        Terima kasih telah menjadi bagian dari cerita kami.
+        <br><br>
+        Made with love ✦
+    </footer>
+
+</div>
+
+<script>
+
+// Mengambil data dari penyimpanan browser
+
+let tamu = JSON.parse(
+    localStorage.getItem("dataTamu") || "[]"
+);
+
+// FORM SUBMIT
+
+document.getElementById("guestForm")
+.addEventListener("submit", function(e) {
+
+    e.preventDefault();
+
+    const nama = document.getElementById("nama").value.trim();
+    const ucapan = document.getElementById("ucapan").value.trim();
+    const kehadiran = document.getElementById("kehadiran").value;
+    const catatan = document.getElementById("catatan").value.trim();
+
+    if (!nama) return;
+
+    const data = {
+        id: Date.now(),
+        nama,
+        ucapan,
+        kehadiran,
+        catatan
+    };
+
+    tamu.unshift(data);
+
+    simpanData();
+
+    this.reset();
+
+    alert("Reservasi berhasil dikirim!");
+
+});
+
+// SIMPAN DATA
+
+function simpanData() {
+
+    localStorage.setItem(
+        "dataTamu",
+        JSON.stringify(tamu)
+    );
+
+    tampilkanData();
+}
+
+// UPDATE STATISTIK
+
+function updateStatistik() {
+
+    const hadir = tamu.filter(
+        t => t.kehadiran === "Hadir"
+    ).length;
+
+    const tidak = tamu.filter(
+        t => t.kehadiran === "Tidak Hadir"
+    ).length;
+
+    document.getElementById("totalHadir").textContent = hadir;
+
+    document.getElementById("totalTidak").textContent = tidak;
+
+    document.getElementById("totalTamu").textContent = tamu.length;
+}
+
+// MEMBUAT KARTU TAMU
+
+function buatKartu(t, tampilkanUcapan = false) {
+
+    const card = document.createElement("div");
+    card.className = "guest-card";
+
+    const nama = document.createElement("div");
+    nama.className = "guest-name";
+    nama.textContent = t.nama;
+    card.appendChild(nama);
+
+    if (!tampilkanUcapan) {
+
+        const status = document.createElement("span");
+        status.className = "status " +
+            (t.kehadiran === "Hadir" ? "hadir" : "tidak");
+
+        status.textContent = t.kehadiran;
+        card.appendChild(status);
+
+        const catatan = document.createElement("p");
+        catatan.className = "guest-info";
+        catatan.textContent = "Catatan: " +
+            (t.catatan || "Tidak ada catatan");
+
+        card.appendChild(catatan);
+
+    } else {
+
+        const ucapan = document.createElement("p");
+        ucapan.className = "guest-info";
+        ucapan.textContent = t.ucapan || "Tidak ada ucapan.";
+
+        card.appendChild(ucapan);
+    }
+
+    return card;
+}
+
+// MENAMPILKAN DAFTAR
+
+function tampilkanData() {
+
+    updateStatistik();
+
+    const guestList = document.getElementById("guestList");
+    const ucapanList = document.getElementById("ucapanList");
+
+    guestList.replaceChildren();
+    ucapanList.replaceChildren();
+
+    const keyword = document.getElementById("search")
+        .value.toLowerCase();
+
+    const hasil = tamu.filter(t =>
+        t.nama.toLowerCase().includes(keyword)
+    );
+
+    if (hasil.length === 0) {
+
+        const empty = document.createElement("div");
+        empty.className = "empty";
+        empty.textContent = "Belum ada data tamu.";
+
+        guestList.appendChild(empty);
+
+    } else {
+
+        hasil.forEach(t => {
+            guestList.appendChild(buatKartu(t));
+        });
+    }
+
+    const adaUcapan = tamu.filter(t => t.ucapan.trim() !== "");
+
+    if (adaUcapan.length === 0) {
+
+        const empty = document.createElement("div");
+        empty.className = "empty";
+        empty.textContent = "Belum ada ucapan.";
+
+        ucapanList.appendChild(empty);
+
+    } else {
+
+        adaUcapan.forEach(t => {
+            ucapanList.appendChild(buatKartu(t, true));
+        });
+    }
+}
+
+// PENCARIAN NAMA
+
+document.getElementById("search")
+.addEventListener("input", tampilkanData);
+
+// TAMPILKAN DATA SAAT HALAMAN DIBUKA
+
+tampilkanData();
+
+</script>
+
+</body>
+            </section>
+
+              <!-- FOOTER / CLOSING -->
+            <footer class="py-10 px-6 bg-rustic-darkbrown text-rustic-bg text-center space-y-4">
+                <div class="space-y-1">
+                    <h2 class="font-serif text-2xl font-bold text-rustic-rose">Sandikajo & Salsadela</h2>
+                    <p class="text-xs text-gray-300 font-light">Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir memberikan doa restu.</p>
+                </div>
+                <div class="pt-4 border-t border-white/10 text-[10px] text-gray-400">
+                    &copy; 2027 Sandikajo & Salsadela Wedding.
+                </div>
+            </footer>
+
+        </div>
+        
+
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // Function to reveal the invitation from VS Code editor simulation without page reload
+        function revealInvitation() {
+            const vscodeIntro = document.getElementById('vscode-intro');
+            const invitationContent = document.getElementById('invitation-content');
+
+            // Mulai musik setelah pengunjung menekan tombol "Buka Undangan"
+            const music = document.getElementById('backgroundMusic');
+            const musicButton = document.getElementById('musicToggle');
+            musicButton.style.display = 'block';
+            music.play().then(() => {
+                document.getElementById('musicIcon').className = 'fa-solid fa-pause';
+            }).catch(() => {
+                // Jika file audio belum terbaca atau browser menolak pemutaran,
+                // tekan tombol musik untuk mencoba lagi.
+                document.getElementById('musicIcon').className = 'fa-solid fa-play';
+            });
+
+            // Fade out VS Code intro
+            vscodeIntro.style.opacity = '0';
+            setTimeout(() => {
+                vscodeIntro.style.display = 'none';
+                invitationContent.classList.remove('hidden');
+                setTimeout(() => {
+                    invitationContent.classList.add('fade-in');
+                }, 50);
+            }, 500);
+        }
+
+        // Tombol untuk memutar atau menjeda musik
+        function toggleMusic() {
+            const music = document.getElementById('backgroundMusic');
+            const icon = document.getElementById('musicIcon');
+
+            if (music.paused) {
+                music.play().then(() => {
+                    icon.className = 'fa-solid fa-pause';
+                }).catch(() => {
+                    icon.className = 'fa-solid fa-play';
+                });
+            } else {
+                music.pause();
+                icon.className = 'fa-solid fa-play';
+            }
+        }
+
+        // Countdown Timer Logic to 16 April 2027 08:00:00 WIB
+        const weddingDate = new Date("April 16, 2027 08:00:00 GMT+0700").getTime();
+
+        const timerInterval = setInterval(function() {
+            const now = new Date().getTime();
+            const distance = weddingDate - now;
+
+            if (distance < 0) {
+                clearInterval(timerInterval);
+                document.getElementById("days").innerText = "00";
+                document.getElementById("hours").innerText = "00";
+                document.getElementById("minutes").innerText = "00";
+                document.getElementById("seconds").innerText = "00";
+            } else {
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                document.getElementById("days").innerText = String(days).padStart(2, '0');
+                document.getElementById("hours").innerText = String(hours).padStart(2, '0');
+                document.getElementById("minutes").innerText = String(minutes).padStart(2, '0');
+                document.getElementById("seconds").innerText = String(seconds).padStart(2, '0');
+            }
+       }, 1000);
+    </script>
+</body>
+</html>
